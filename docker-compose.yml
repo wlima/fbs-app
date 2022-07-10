@@ -27,13 +27,13 @@ services:
       - 80:80
     volumes:
       - ./:/var/www
-      - ./.docker/nginx/:/etc/nginx/conf.d/
+      - ./docker/nginx/:/etc/nginx/conf.d/
     networks:
       - network-app
 
   #node
   node:
-    build: .docker/node
+    build: /docker/node
     container_name: node
     restart: always
     ports:
