@@ -1,0 +1,136 @@
+version: "3.9"
+
+services:
+  fbs-app:
+    build:
+      args:
+        user: washingtonlslima
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: washingtonlslima/fbs
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www/
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - queue
+    networks:
+      - network-app
+
+  #nginx
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www
+      - ./.docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - network-app
+
+  #node
+  node:
+    build: .docker/node
+    container_name: node
+    restart: always
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - TZ=America/Bahia
+    volumes:
+      - .:/var/www
+    networks:
+      - network-app
+
+  # db
+#   db-mysql:
+#    image: mysql:5.7
+#    restart: always
+#    ports:
+#      - 3307:3306
+#    volumes:
+#      - ./.docker/mysql:/var/lib/mysql
+#    environment:
+#      MYSQL_DATABASE: ${DB_DATABASE}
+#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#      MYSQL_USER: ${DB_USERNAME}
+#      MYSQL_PASSWORD: ${DB_PASSWORD}
+#    networks:
+#      - network-app
+
+  # db
+  db-pgsql:
+    image: postgres:9.6-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker/psql:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+     - network-app
+
+#   phpmyadmin:
+#    image: phpmyadmin
+#    restart: always
+#    ports:
+#      - 8888:80
+#    environment:
+#      - PMA_ARBITRARY=1
+#    networks:
+#     - network-app
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "washingtonlslima@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "@120710W!"
+    ports:
+      - "88:80"
+    depends_on:
+      - db-pgsql
+    networks:
+      - network-app
+
+#   adminer:
+#     image: adminer
+#     restart: always
+#     ports:
+#       - 8081:8080
+#     networks:
+#      - network-app
+
+  # redis
+  redis:
+    image: redis:latest
+    networks:
+      - network-app
+
+  # queue
+  queue:
+    build:
+      args:
+        user: washingtonlslima
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    command: "php artisan queue:work"
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - redis
+    networks:
+      - network-app
+# Network
+networks:
+  network-app:
+    driver: bridge
