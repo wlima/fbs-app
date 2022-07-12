@@ -18,9 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/user',\App\Http\Controllers\Web\UserController::class);
-
 Auth::routes();
 
+Route::resource('/category',\App\Http\Controllers\Web\CategoryController::class);
+Route::resource('/account',\App\Http\Controllers\Web\AccountBankController::class);
+Route::resource('/creditor',\App\Http\Controllers\Web\CreditorController::class);
+Route::resource('/expense',\App\Http\Controllers\Web\DuplicateController::class);
+Route::resource('/renvue',\App\Http\Controllers\Web\DuplicateController::class);
+Route::resource('/user',\App\Http\Controllers\Web\UserController::class);
 Route::get('/home', [\App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
 

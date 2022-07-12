@@ -10,5 +10,5 @@ class {{ class }} extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=['user_id'];
+    protected $fillable=['user_id'];
 }

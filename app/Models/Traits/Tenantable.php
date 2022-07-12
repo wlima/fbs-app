@@ -13,7 +13,7 @@ trait Tenantable
 
         if (checkUserId()){
             static::creating(function ($model){
-                $model->user_id=session('session_id');
+                $model->user_id=session('user_id');
             });
         }
     }
