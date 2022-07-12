@@ -10,7 +10,7 @@ class Duplicate extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=[
+    protected $fillable=[
         'user_id',
         'description',
         'numberInstallments',

@@ -10,5 +10,5 @@ class Transaction extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=['user_id', 'accountBank_id', 'duplicateinstallment_id'];
+    protected $fillable=['user_id', 'accountBank_id', 'duplicateinstallment_id'];
 }

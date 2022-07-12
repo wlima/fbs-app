@@ -10,7 +10,7 @@ class Creditor extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=['user_id', 'name', 'accountbank',];
+    protected $fillable=['user_id', 'name', 'accountbank',];
 
     public function duplicate()
     {

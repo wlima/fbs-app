@@ -50,12 +50,13 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $me=UserResource::collection($this->repository->getFind($id));
+        return view('pages.user.profile', ["me"=>$me]);
     }
 
     /**

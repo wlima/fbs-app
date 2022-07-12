@@ -10,7 +10,7 @@ class Category extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=['user_id', 'description'. 'status'];
+    protected $fillable=['user_id', 'description'. 'status'];
 
     public function duplicate()
     {

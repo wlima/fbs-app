@@ -10,7 +10,7 @@ class AccountBank extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=['user_id','balance','bankName','description', 'status'];
+    protected $fillable=['user_id','balance','bankName','description', 'status'];
 
     public function duplicateInstallment()
     {

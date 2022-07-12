@@ -10,7 +10,7 @@ class DuplicateInstallment extends Model
 {
     use Tenantable, Notifiable;
 
-    protected $filable=[
+    protected $fillable=[
         'user_id',
         'installmentNumber',
         'paidOut','dueDate',
